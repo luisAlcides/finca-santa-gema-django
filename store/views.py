@@ -11,6 +11,34 @@ def home(request):
     return render(request, 'store/home.html')
 
 
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'store/register.html', {'form': form})
+
+
+@login_required
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        form = CartForm(request.POST)
+        if form.is_valid():
+            cart_item, created = Cart.objects.get_or_create(
+                user=request.user, product=product)
+            cart_item.quantity += form.cleaned_data['quantity']
+            cart_item.save()
+            return redirect('cart_detail')
+    else:
+        form = CartForm()
+    return render(request, 'store/add_to_cart.html', {'product': product, 'form': form})
+
+
 def product_list(request):
     query = request.GET.get('q')
     category = request.GET.get('category')
@@ -40,6 +68,7 @@ def product_list(request):
     return render(request, 'store/product_list.html', {'products': products, 'categories': categories})
 
 
+@login_required
 def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
@@ -49,24 +78,6 @@ def add_product(request):
     else:
         form = ProductForm()
     return render(request, 'store/add_product.html', {'form': form})
-
-
-def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    if request.method == 'POST':
-        form = CartForm(request.POST)
-        if form.is_valid():
-            cart_item, created = Cart.objects.get_or_create(
-                user=request.user,
-                product=product,
-            )
-            cart_item.quantity += form.cleaned_data['quantity']
-            cart_item.save()
-            return redirect('cart_detail')
-    else:
-        form = CartForm()
-    return render(request, 'store/add_to_cart.html',
-                  {'product': product, 'form': form})
 
 
 def cart_detail(request):
@@ -80,18 +91,6 @@ def checkout(request):
         Cart.objects.filter(user=request.user).delete()
         return redirect('product_list')
     return render(request, 'store/checkout.html')
-
-
-def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = UserRegisterForm()
-    return render(request, 'store/register.html', {'form': form})
 
 
 @login_required
