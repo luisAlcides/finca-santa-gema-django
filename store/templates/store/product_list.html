@@ -1,0 +1,79 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <form id="search-form" class="form-inline" method="get">
+            <input type="text" name="q" id="search-input" class="form-control mr-2" placeholder="Buscar productos..." value="{{ request.GET.q }}">
+            <select name="category" class="form-control mr-2" id="category-select">
+                <option value="">Todas las categorías</option>
+                {% for key, value in categories %}
+                    <option value="{{ key }}" {% if request.GET.category == key %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+    </div>
+</div>
+
+<div id="product-list" class="row">
+    {% for product in products %}
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description }}</p>
+                <p class="card-text"><strong>${{ product.price }}</strong></p>
+                <p class="card-text"><em>{{ product.get_category_display }}</em></p>
+                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Agregar al Carrito</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('search-input');
+    const categorySelect = document.getElementById('category-select');
+    const productList = document.getElementById('product-list');
+
+    function fetchProducts() {
+        const query = searchInput.value;
+        const category = categorySelect.value;
+        const url = `{% url 'product_list' %}?q=${query}&category=${category}`;
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            productList.innerHTML = '';
+            data.forEach(product => {
+                const productCard = `
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text">${product.description}</p>
+                                <p class="card-text"><strong>$${product.price}</strong></p>
+                                <p class="card-text"><em>${product.category}</em></p>
+                                <a href="/add/${product.id}/" class="btn btn-primary">Agregar al Carrito</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productList.insertAdjacentHTML('beforeend', productCard);
+            });
+        });
+    }
+
+    searchInput.addEventListener('input', fetchProducts);
+    categorySelect.addEventListener('change', fetchProducts);
+});
+</script>
+{% endblock %}

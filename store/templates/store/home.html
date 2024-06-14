@@ -1,0 +1,100 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<header class="bg-dark text-white text-center py-5">
+  <div class="container">
+    <h1 class="display-4">Bienvenidos a Nuestra Tienda</h1>
+    <p class="lead">
+      Ofrecemos los mejores productos de carne de cerdo, derivados de leche y
+      caballos de raza.
+    </p>
+    <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg mt-3"
+      >Ver Productos</a
+    >
+  </div>
+</header>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card h-100 text-center">
+          <img
+            src="{% static 'images/pork.jpg' %}"
+            class="card-img-top"
+            alt="Carne de Cerdo"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Carne de Cerdo</h5>
+            <p class="card-text">Productos frescos y de alta calidad.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card h-100 text-center">
+          <img
+            src="{% static 'images/dairy.jpg' %}"
+            class="card-img-top"
+            alt="Derivados de Leche"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Derivados de Leche</h5>
+            <p class="card-text">
+              Quesos, yogures y más, directamente de la granja.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card h-100 text-center">
+          <img
+            src="{% static 'images/horse.jpg' %}"
+            class="card-img-top"
+            alt="Caballos de Raza"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Caballos de Raza</h5>
+            <p class="card-text">Caballos de alta calidad y pedigree.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-light py-5">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-lg-12">
+        <h2 class="display-4">¿Por Qué Elegirnos?</h2>
+        <p class="lead">Calidad, frescura y tradición en cada producto.</p>
+      </div>
+    </div>
+    <div class="row text-center mt-4">
+      <div class="col-lg-4">
+        <i class="fas fa-award fa-3x mb-3 text-primary"></i>
+        <h3>Calidad Garantizada</h3>
+        <p>Solo los mejores productos llegan a tu mesa.</p>
+      </div>
+      <div class="col-lg-4">
+        <i class="fas fa-leaf fa-3x mb-3 text-primary"></i>
+        <h3>Frescura Natural</h3>
+        <p>Productos directamente del productor.</p>
+      </div>
+      <div class="col-lg-4">
+        <i class="fas fa-heart fa-3x mb-3 text-primary"></i>
+        <h3>Compromiso con la Salud</h3>
+        <p>Productos saludables y de origen confiable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-dark text-white text-center py-3">
+  <div class="container">
+    <p class="mb-0">
+      &copy; 2024 Nuestra Tienda. Todos los derechos reservados.
+    </p>
+  </div>
+</footer>
+{% endblock %}

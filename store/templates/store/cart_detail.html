@@ -1,0 +1,26 @@
+{% extends 'store/base.html' %} 
+{% load cart_filters %}
+{% block content %}
+<h2>Mi Carrito</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Precio</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in cart_items %}
+    <tr>
+      <td>{{ item.product.name }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>${{ item.product.price }}</td>
+      <td>${{ item.product.price|multiply:item.quantity }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{% url 'checkout' %}" class="btn btn-success">Comprar</a>
+{% endblock %}

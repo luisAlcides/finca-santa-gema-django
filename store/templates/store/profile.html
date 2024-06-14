@@ -1,0 +1,18 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="text-center">Perfil de Usuario</h2>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Nombre de Usuario: {{ user.username }}</h5>
+                <p class="card-text">Correo Electrónico: {{ user.email }}</p>
+                {% if user.is_staff %}
+                <a href="{% url 'register_admin' %}" class="btn btn-primary">Crear Administrador</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
