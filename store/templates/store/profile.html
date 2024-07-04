@@ -11,6 +11,7 @@
                 {% if user.is_staff %}
                 <a href="{% url 'register_admin' %}" class="btn btn-primary">Crear Administrador</a>
                 {% endif %}
+                <a href="{% url 'profile_settings' %}" class="btn btn-secondary">Configuración de Perfil</a>
             </div>
         </div>
     </div>

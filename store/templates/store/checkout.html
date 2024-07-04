@@ -1,7 +1,9 @@
-{% extends 'store/base.html' %} {% block content %}
+{% extends 'store/base.html' %}
+
+{% block content %}
 <h2>Confirmar Compra</h2>
 <form method="post">
   {% csrf_token %}
-  <button type="submit" class="btn btn-primary">Confirmar Compra</button>
+  <button type="submit" class="btn btn-primary">Ir a Pago</button>
 </form>
 {% endblock %}

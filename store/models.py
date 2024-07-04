@@ -1,6 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    CURRENCY_CHOICES = [
+        ('NIO', 'Córdobas'),
+        ('USD', 'Dólares'),
+    ]
+    preferred_currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='NIO')
+
+    def __str__(self):
+        return self.user.username
 
 class Product(models.Model):
     CATEGORY_CHOICES = [
@@ -18,6 +28,11 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def get_price_in_currency(self, currency='NIO'):
+        exchange_rate = 0.027  # Ejemplo de tasa de cambio de Córdobas a Dólares
+        if currency == 'USD':
+            return self.price * exchange_rate
+        return self.price
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

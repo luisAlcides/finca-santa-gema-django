@@ -1,5 +1,6 @@
-{% extends 'store/base.html' %} 
-{% load cart_filters %}
+{% extends 'store/base.html' %}
+{% load custom_tags custom_filters %}
+
 {% block content %}
 <h2>Mi Carrito</h2>
 <table class="table">
@@ -9,6 +10,7 @@
       <th>Cantidad</th>
       <th>Precio</th>
       <th>Total</th>
+      <th>Acciones</th>
     </tr>
   </thead>
   <tbody>
@@ -16,8 +18,23 @@
     <tr>
       <td>{{ item.product.name }}</td>
       <td>{{ item.quantity }}</td>
-      <td>${{ item.product.price }}</td>
-      <td>${{ item.product.price|multiply:item.quantity }}</td>
+      <td>
+        {% if currency == 'USD' %}
+        ${{ item.product|get_price_in_currency:'USD'|floatformat:2 }}
+        {% else %}
+        C${{ item.product|get_price_in_currency:'NIO' }}
+        {% endif %}
+      </td>
+      <td>
+        {% if currency == 'USD' %}
+        ${{ item.product|get_price_in_currency:'USD'|multiply:item.quantity|floatformat:2 }}
+        {% else %}
+        C${{ item.product|get_price_in_currency:'NIO'|multiply:item.quantity }}
+        {% endif %}
+      </td>
+      <td>
+        <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+      </td>
     </tr>
     {% endfor %}
   </tbody>
